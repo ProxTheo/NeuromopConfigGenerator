@@ -90,10 +90,17 @@ PROTOCOL_SCHEMAS = {
             "name": "IV Selection & Stim Enable",
             "fixed_task": 1,
             "config_segments": [
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
+                # bit[7] = V/I load flag
+                {"type": "bool", "name": "Load_VI"},
+
+                # bit[6:5] = V/I values
                 {"type": "bool", "name": "V"},
                 {"type": "bool", "name": "I"},
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
+
+                # bit[4] = Stim_EN load flag
+                {"type": "bool", "name": "Load_Stim_EN"},
+
+                # bit[3:0] = Stim_EN value
                 {
                     "type": "uint",
                     "name": "Stim_EN",
@@ -102,19 +109,29 @@ PROTOCOL_SCHEMAS = {
                 },
             ],
         },
+
         {
             "name": "P_off",
             "fixed_task": 2,
             "config_segments": [
-                {"type": "const", "bits": 1, "value": 0, "label": "X -> using 0"},
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
+                # bit[7] = don't care / unused
+                {"type": "reserved", "bits": 1, "label": "Unused / X"},
+
+                # bit[6] = res load flag
+                {"type": "bool", "name": "Load_res"},
+
+                # bit[5:2] = P_off value
                 {
                     "type": "uint",
                     "name": "P_off",
                     "bits": 4,
                     "reverse_bits": True
                 },
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
+
+                # bit[1] = P_off load flag
+                {"type": "bool", "name": "Load_P_off"},
+
+                # bit[0] = res value
                 {"type": "bool", "name": "res"},
             ],
         },
@@ -420,6 +437,31 @@ class ProtocolGui(QMainWindow):
         self.rebuild_dynamic_forms()
         self.update_packet()
 
+    def enforce_if_elseif_flags(self):
+        if self.current_schema is None:
+            return
+
+        name = self.current_schema["name"]
+
+        if name == "IV Selection & Stim Enable":
+            load_vi = self.config_widgets.get("Load_VI")
+            load_stim = self.config_widgets.get("Load_Stim_EN")
+
+            if load_vi is not None and load_stim is not None:
+                if load_vi.isChecked():
+                    load_stim.blockSignals(True)
+                    load_stim.setChecked(False)
+                    load_stim.blockSignals(False)
+
+        elif name == "P_off":
+            load_res = self.config_widgets.get("Load_res")
+            load_poff = self.config_widgets.get("Load_P_off")
+
+            if load_res is not None and load_poff is not None:
+                if load_res.isChecked():
+                    load_poff.blockSignals(True)
+                    load_poff.setChecked(False)
+                    load_poff.blockSignals(False)
 
     def make_uint_widget(self, bits):
         widget = QLineEdit()
@@ -543,6 +585,8 @@ class ProtocolGui(QMainWindow):
         else:
             self.stim_grid_group.hide()
 
+        
+
         self.update_packet()
 
     def get_task_value_and_bits(self):
@@ -626,6 +670,8 @@ class ProtocolGui(QMainWindow):
                 col_even=col_even,
                 col_odd=col_odd
             )
+
+        self.enforce_if_elseif_flags()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-('C:\\Users\\bahar\\Desktop\\ConfigGenerator\\build\\ConfigGenerator\\PYZ-00.pyz',
+('C:\\Users\\bahar\\Documents\\GitHub\\NeuromopConfigGenerator\\build\\ConfigGenerator\\PYZ-00.pyz',
  [('PySide6',
    'C:\\Users\\bahar\\miniconda3\\Lib\\site-packages\\PySide6\\__init__.py',
    'PYMODULE'),
