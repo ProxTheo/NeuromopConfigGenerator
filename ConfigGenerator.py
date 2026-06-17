@@ -184,14 +184,14 @@ PROTOCOL_SCHEMAS = {
                 {"type": "const", "bits": 1, "value": 1, "label": "Even suffix 1"},
             ],
             "config_segments": [
-                {"type": "bool", "name": "Block 16"},
                 {"type": "bool", "name": "Block 14"},
                 {"type": "bool", "name": "Block 12"},
                 {"type": "bool", "name": "Block 10"},
                 {"type": "bool", "name": "Block 8"},
                 {"type": "bool", "name": "Block 6"},
                 {"type": "bool", "name": "Block 4"},
-                {"type": "bool", "name": "Block 2"}
+                {"type": "bool", "name": "Block 2"},
+                {"type": "bool", "name": "Block 0"}
             ],
         },
         {
