@@ -161,37 +161,33 @@ PROTOCOL_SCHEMAS = {
         {
             "name": "Decoder Enable Odd",
             "task_segments": [
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
-                {"type": "uint", "name": "Decoder_Index", "bits": 2},
-                {"type": "const", "bits": 1, "value": 0, "label": "Odd suffix 0"},
+                {"type": "const", "bits": 4, "value": 8, "label": "Odd suffix 1000"},
             ],
             "config_segments": [
-                {"type": "bool", "name": "Block 15"},
-                {"type": "bool", "name": "Block 13"},
-                {"type": "bool", "name": "Block 11"},
-                {"type": "bool", "name": "Block 9"},
-                {"type": "bool", "name": "Block 7"},
-                {"type": "bool", "name": "Block 5"},
-                {"type": "bool", "name": "Block 3"},
-                {"type": "bool", "name": "Block 1"},
+                {"type": "bool", "name": "Block 8, Pixel 448-511"},
+                {"type": "bool", "name": "Block 7, Pixel 384-447"},
+                {"type": "bool", "name": "Block 6, Pixel 320-383"},
+                {"type": "bool", "name": "Block 5, Pixel 256-319"},
+                {"type": "bool", "name": "Block 4, Pixel 192-255"},
+                {"type": "bool", "name": "Block 3, Pixel 128-191"},
+                {"type": "bool", "name": "Block 2, Pixel 64-127"},
+                {"type": "bool", "name": "Block 1, Pixel 0-63"}
             ],
         },
         {
             "name": "Decoder Enable Even",
             "task_segments": [
-                {"type": "const", "bits": 1, "value": 1, "label": "Fixed 1"},
-                {"type": "uint", "name": "Decoder_Index", "bits": 2},
-                {"type": "const", "bits": 1, "value": 1, "label": "Even suffix 1"},
+                {"type": "const", "bits": 4, "value": 9, "label": "Even suffix 1001"},
             ],
             "config_segments": [
-                {"type": "bool", "name": "Block 14"},
-                {"type": "bool", "name": "Block 12"},
-                {"type": "bool", "name": "Block 10"},
-                {"type": "bool", "name": "Block 8"},
-                {"type": "bool", "name": "Block 6"},
-                {"type": "bool", "name": "Block 4"},
-                {"type": "bool", "name": "Block 2"},
-                {"type": "bool", "name": "Block 0"}
+                {"type": "bool", "name": "Block 8, Pixel 448-511"},
+                {"type": "bool", "name": "Block 7, Pixel 384-447"},
+                {"type": "bool", "name": "Block 6, Pixel 320-383"},
+                {"type": "bool", "name": "Block 5, Pixel 256-319"},
+                {"type": "bool", "name": "Block 4, Pixel 192-255"},
+                {"type": "bool", "name": "Block 3, Pixel 128-191"},
+                {"type": "bool", "name": "Block 2, Pixel 64-127"},
+                {"type": "bool", "name": "Block 1, Pixel 0-63"}
             ],
         },
         {
@@ -225,9 +221,9 @@ class StimBufferGrid(QWidget):
         if row is not None:
             self.selected_row = row
         if col_even is not None:
-            self.selected_col_even = col_even
+            self.selected_col_odd = 7 - col_even
         if col_odd is not None:
-            self.selected_col_odd = col_odd
+            self.selected_col_even= 7 - col_odd
         self.update()
 
     def paintEvent(self, event):
